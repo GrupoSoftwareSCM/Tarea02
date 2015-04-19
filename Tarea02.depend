@@ -9,13 +9,28 @@
 	<time.h>
 	"funciones.h"
 
-1429328263 /home/oscar/Escritorio/Tarea02/funciones.h
+1429461403 /home/oscar/Escritorio/Tarea02/funciones.h
 
-1429332337 source:/home/oscar/Escritorio/Tarea02/main.cpp
+1429462221 source:/home/oscar/Escritorio/Tarea02/main.cpp
 	<iostream>
 	<stdlib.h>
 	<string>
 	<string.h>
 	<strings.h>
 	"funciones.h"
+	"funciones.cpp"
+	<vector>
+	<fstream>
+
+1429462253 /home/oscar/Escritorio/Tarea02/funciones.cpp
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	<string>
+	<string.h>
+	<strings.h>
+	<time.h>
+	"funciones.h"
+	<vector>
+	<fstream>
 

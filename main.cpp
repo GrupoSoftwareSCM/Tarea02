@@ -5,6 +5,12 @@
 #include <strings.h>
 #include "funciones.h"
 #include "funciones.cpp"
+#include <vector>
+
+/*incluir libreria para ficheros*/
+#include <fstream>
+
+
 using namespace std;
 
 /*
@@ -29,12 +35,17 @@ using namespace std;
 
 int main(int argc,char *argv[])
 {
-    string path;
-    //cout << "Hello world!" << endl;
+    char path[] = "doc/access.log";
+    int estado[80],i;
+
+
     if(strcmp(argv[1],"-so") == 0 || strcmp(argv[1],"-SO") == 0 || strcmp(argv[1],"-So") == 0 || strcmp(argv[1],"-sO") == 0){
         if(ValidarFecha(argv[2]) == 1 && ValidarFecha(argv[4]) == 1){
             if(CompararFecha(argv[2],argv[4]) == 1){
                 if(strcmp(argv[3],"hasta") == 0){
+                    *estado = agregarEstado(path);
+                    for(i=0;i<80;i++)
+                        cout<<"estado: "<<estado[i]<<endl;
 
                 }
                 else{

@@ -7,8 +7,60 @@
 #include <strings.h>
 #include <time.h>
 #include "funciones.h"
+#include <vector>
+
+/*incluir libreria para ficheros*/
+#include <fstream>
 
 using namespace std;
+int buscarEstado(int estado[], string e){
+    int i;
+    for(i = 0;i<80;i++){
+        if(estado[i] == atoi(e.c_str())){
+            return 1;
+        }
+    }
+    return 0;
+}
+void Parcear(string line,string par[]){
+    int i,found;
+    char caracter = '"';
+    for(i=0;i<9;i++){
+        if((i<3 && line.find(" ") != -1) || (i>4 && i<7 && line.find(" ") != -1)){
+            found = line.find(" ");
+            par[i] = line.substr(0,found);
+            line = line.substr(found+1,line.size());
+        }
+        else{
+            if(i == 3 && line.find("]") != -1){
+                found = line.find("]");
+                par[i] = line.substr(1,found-1);
+                line = line.substr(found+3,line.size());
+            }
+            else{
+                if(i == 4 && line.find(caracter) != -1){
+                    found = line.find(caracter);
+                    par[i] = line.substr(0,found);
+                    line = line.substr(found+2,line.size());
+                }
+                else{
+                    if(i==7 && line.find(" ") != -1){
+                        found = line.find(" ");
+                        par[i] = line.substr(1,found-2);
+                        line = line.substr(found+2,line.size());
+                    }
+                    else{
+                        if(i == 8 && line.find(caracter) != -1){
+                            found = line.find(caracter);
+                            par[i] = line.substr(0,found);
+                            line = "null";
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 int ValidarFecha(string Fecha){
     //formato ISO YYYY-MM-DD
@@ -58,17 +110,53 @@ int CompararFecha(string f1,string f2){
     m2 = f2.substr(5,2);
     d2 = f2.substr(8,2);
 
-    if(atoi(y1.c_str()) <= atoi(y2.c_str())){
-        if(atoi(m1.c_str()) <= atoi(m2.c_str())){
-            if(atoi(d1.c_str()) < atoi(d2.c_str()))
+    if(atoi(y1.c_str()) < atoi(y2.c_str()))
+        return 1;
+    if(atoi(y1.c_str()) == atoi(y2.c_str())){
+        if(atoi(m1.c_str()) < atoi(m2.c_str()))
+            return 1;
+        if(atoi(m1.c_str()) == atoi(m2.c_str())){
+            if(atoi(d1.c_str()) <= atoi(d2.c_str()))
                 return 1;
             else
                 return 0;
         }
-        else
+        else{
             return 0;
+        }
+    }
+    else{
+        return 0;
+    }
+
+                return 1;
+}
+int agregarEstado(char path[]){
+    string line,parseo[9];
+    int estado[80],i=0;
+
+    /*abrimos el fichero*/
+    ifstream fe; // Fichero de Entrada
+    fe.open(path);
+
+    if(fe.is_open()){
+        cout<<"fichero abierto"<<endl;
+        while(!fe.eof()){
+            getline(fe,line);
+            Parcear(line,parseo);
+            //cout<<"estado: "<<parseo[5]<<endl;
+            if(buscarEstado(estado,parseo[5]) == 0) {
+                estado[i] = atoi(parseo[5].c_str());
+                i++;
+            }
+        }
+        //cout<<"parseo terminado ..."<<endl;
+        fe.close();
+
     }
     else
-        return 0;
+        cout<<"no se pudo abrir el fichero"<<endl;
+    //cout<<"largo"<<estado.size()<<endl;
+    int Estado = *estado;
+    return Estado;
 }
-
